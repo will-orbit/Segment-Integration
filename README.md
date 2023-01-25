@@ -5,7 +5,7 @@ This project allows sending new Activities and Members to Orbit via a Segment Fu
 
 ## Setup
 
-1. Create a new Destination Function in Segment by going to Connections --> Catalog --> functions
+1. Create a new Destination Function in Segment by going to Connections --> Catalog --> Functions
 2. Copy and Paste the code in segment.js in the code editor
 3. In the right-hand panel of the Code Editor, select "Settings" and add the following variables:
 
