@@ -8,6 +8,7 @@ This project allows sending new Activities and Members to Orbit via a Segment Fu
 1. Create a new Destination Function in Segment by going to Connections --> Catalog --> functions
 2. Copy and Paste the code in segment.js in the code editor
 3. In the right-hand panel of the Code Editor, select "Settings" and add the following variables:
+
 Label         | Type          | Required?     
 ------------- | ------------- | -------------
 orbitSlug  | String  | Yes
@@ -54,3 +55,5 @@ Segment Track Property         | Orbit Activity Field | Notes
 Event Name  | Activity Title  | 
 Event Name  | Activity Type  | Unless the "activityMapping" setting is configued.
 messageId | Activity Key | This will prevent duplicate activities from being created if the same Track Event is seen multiple times in Segment
+
+:warning: It is highly recommend to use Destination Filters in Segment to limit which activities are created in Orbit. Too many activity types in Orbit will create noise and make Orbit harder to use
