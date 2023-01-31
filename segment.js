@@ -59,21 +59,21 @@ async function onTrack(event, settings) {
   console.log('endpoint: ' + endpoint);
   let response;
   let body = {
-    activity: {
-      identity: {
-        source: 'segment',
-        username: event.userId
-      },
+      activity: {
       title: event.event,
       key: event.messageId
       //activity_type: event.event
-    }
-  };
+    }}
   //If Segment event name exists in the Activity Mapping, set the activity type key to what is mapped. Else, set Activity Type as Event Name
   if(activityTypeKey){
     body.activity.activity_type_key = activityTypeKey
   }else{
     body.activity.activity_type = event.event
+  }
+  //Add properties if addProperties setting is set to true
+  if(settings.addProperties == true){
+    body.activity.properties = {};
+    body.activity.properties = event.properties
   }
 
   console.log('body' + JSON.stringify(body));
