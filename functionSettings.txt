@@ -1,0 +1,36 @@
+[{
+    "name": "orbitSlug",
+    "label": "Orbit Slug",
+    "description": "Your Orbit Workspace Slug. This can be found in the URL when logged into Orbit: https://app.orbit.love/{WORKSPACE_SLUG}",
+    "type": "STRING",
+    "required": true,
+    "sensitive": false
+}, {
+    "name": "orbitApiKey",
+    "label": "Orbit API Key.",
+    "description": "A Workspace or User Orbit API Token. More info here: https://orbit.love/docs/all/api-tokens",
+    "type": "STRING",
+    "required": true,
+    "sensitive": false
+}, {
+    "name": "customIdentitySource",
+    "label": "Custom Identity Source",
+    "description": "By default, this function will create a Custom Identity Source for your members in Orbit titled 'segment'. If you would like to change this identity source, use this variable.",
+    "type": "STRING",
+    "required": false,
+    "sensitive": false
+}, {
+    "name": "activityMapping",
+    "label": "Activity Mapping",
+    "description": "By default, Events in Segment will be mapped to an Activity Type in Orbit with the same name. For example, an 'Order Completed' event in Segment will create or map to an activity type in Orbit with the name 'Order Completed'. If you would like to map Events in Segment to a different 'Activity Type Key' in Orbit, use this object. The Key of each variable should match an Event Name in Segment and the value should match the Activity Type Key in Orbit.",
+    "type": "TEXT_MAP",
+    "required": false,
+    "sensitive": false
+}, {
+    "name": "addProperties",
+    "label": "Add Properties",
+    "description": "If true, Event Properties on the Segment Track Event will be added as Actrivity Properties in Orbit",
+    "type": "BOOLEAN",
+    "required": false,
+    "sensitive": false
+}]
