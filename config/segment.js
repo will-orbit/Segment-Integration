@@ -4,6 +4,11 @@
  * @param  {FunctionSettings} settings
  */
 async function onTrack(event, settings) {
+  //Exit if no user id (anonymous user)
+  if(!event.userId){
+    throw new Error('User ID not found.')
+  }
+
   //Set Default identity source if not supplied
   if (!settings.customIdentitySource) {
     settings.customIdentitySource = 'segment';
@@ -106,6 +111,12 @@ async function onTrack(event, settings) {
  */
 async function onIdentify(event, settings) {
   // Learn more at https://segment.com/docs/connections/spec/track/
+
+    //Exit if no user id (anonymous user)
+  if(!event.userId){
+    throw new Error('User ID not found.')
+  }
+  
   if (!settings.customIdentitySource) {
     settings.customIdentitySource = 'segment';
   }
