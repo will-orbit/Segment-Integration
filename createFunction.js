@@ -1,47 +1,29 @@
 const axios = require('axios');
 const readline = require('readline');
+const fs = require('fs')
 
 function askQuestion(query) {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
+	const rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+	});
 
-    return new Promise(resolve => rl.question(query, ans => {
-        rl.close();
-        resolve(ans);
-    }))
+	return new Promise(resolve => rl.question(query, ans => {
+		rl.close();
+		resolve(ans);
+	}))
 }
 
-function getDownloadURL(owner, repo, file) {
-	return new Promise(function(resolve, reject) {
-		options = {
-			method: 'GET',
-			url: "https://api.github.com/repos/" + owner + "/" + repo + "/contents/" + file,
-			validateStatus: () => true
-		};
-		axios.request(options).then(function(response) {
-			resolve(response.data.download_url);
-		}).catch(function(error) {
-			reject(error);
-		});
-	})
+function readFile(fileName) {
+	try {
+		const data = fs.readFileSync('config/' + fileName, 'utf8');
+		return data;
+	} catch (err) {
+		console.error(err);
+	}
 }
 
-function getFileContents(downloadUrl) {
-	return new Promise(function(resolve, reject) {
-		options = {
-			method: 'GET',
-			url: downloadUrl,
-			validateStatus: () => true
-		};
-		axios.request(options).then(function(response) {
-			resolve(response.data);
-		}).catch(function(error) {
-			reject(error);
-		});
-	})
-}
+
 
 function createSegmentFunction(apiToken, functionName, settings, code) {
 	return new Promise(function(resolve, reject) {
@@ -80,25 +62,20 @@ async function main() {
 	var settingsFile = "functionSettings.txt"
 
 	//Get Function Code
-	var functionDownloadUrl = await getDownloadURL(owner, repo, functionFile);
-	console.log("Got Function Download URL");
-	var functionCode = await getFileContents(functionDownloadUrl);
-	console.log("Got Function Code")
+	var functionCode = readFile(functionFile);
+	//console.log(functionCode)
 
 	//Get Settings Array for Function
-	var settingsDownloadUrl = await getDownloadURL(owner, repo, settingsFile);
-	console.log("Got Settings Download URL");
-	var settings = await getFileContents(settingsDownloadUrl);
-	console.log("Got Settings");
+	var settings = readFile(settingsFile);
 
 	//Ask for Segment API Key
 	var apiToken = await askQuestion("Enter your Segment API Token: ");
-	console.log(apiToken)
+	//console.log(apiToken)
 	//Create Function
 	console.log("Creating Segment Function...")
 	//var apiToken = "sgp_PKgTKBQUZ0SCOEDUMFMa5rerxsnYDbJivKpjDYLjDB5kI1LQKBjGF4NOt7EgguGX";
-	var functionName = "Automated Function Test 2";
-	var result = await createSegmentFunction(apiToken,functionName,settings,functionCode);
+	var functionName = "Automated Function Test 123";
+	var result = await createSegmentFunction(apiToken, functionName, settings, functionCode);
 	console.log("Create response code: " + result.status)
 	console.log("Create response text: " + result.statusText)
 
