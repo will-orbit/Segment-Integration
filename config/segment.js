@@ -5,7 +5,7 @@
  */
 async function onTrack(event, settings) {
   //Exit if no user id (anonymous user)
-  if(!event.userId){
+  if (!event.userId) {
     throw new Error('User ID not found.')
   }
 
@@ -23,7 +23,6 @@ async function onTrack(event, settings) {
     settings.customIdentitySource +
     '&username=' +
     event.userId;
-  console.log('find slug endpoint: ' + endpoint);
   let getSlugResponse;
   try {
     getSlugResponse = await fetch(endpoint, {
@@ -43,45 +42,42 @@ async function onTrack(event, settings) {
     throw new RetryError(`Failed with ${getSlugResponse.status}`);
   }
   let data = await getSlugResponse.json();
-  console.log('get response: ' + JSON.stringify(data));
-  if(!data.data.attributes.slug){
+  if (!data.data.attributes.slug) {
     throw new Error('Member slug not found.')
   }
   memberSlug = data.data.attributes.slug;
-  console.log("memberslug: " + memberSlug);
 
 
   //Send Track Event
 
   //Check for activity mapping
   var activityTypeKey = null;
-  if(settings.activityMapping[event.event]){
+  if (settings.activityMapping[event.event]) {
     activityTypeKey = settings.activityMapping[event.event]
   }
 
   endpoint =
     'https://app.orbit.love/api/v1/' + settings.orbitSlug + '/members/' + memberSlug + '/activities';
-  console.log('endpoint: ' + endpoint);
   let response;
   let body = {
-      activity: {
+    activity: {
       title: event.event,
       key: event.messageId
       //activity_type: event.event
-    }}
+    }
+  }
   //If Segment event name exists in the Activity Mapping, set the activity type key to what is mapped. Else, set Activity Type as Event Name
-  if(activityTypeKey){
+  if (activityTypeKey) {
     body.activity.activity_type_key = activityTypeKey
-  }else{
+  } else {
     body.activity.activity_type = event.event
   }
   //Add properties if addProperties setting is set to true
-  if(settings.addProperties == true){
+  if (settings.addProperties == true) {
     body.activity.properties = {};
     body.activity.properties = event.properties
   }
 
-  console.log('body' + JSON.stringify(body));
   try {
     response = await fetch(endpoint, {
       method: 'POST',
@@ -100,8 +96,7 @@ async function onTrack(event, settings) {
     // Retry on 5xx (server errors) and 429s (rate limits)
     throw new RetryError(`Failed with ${response.status}`);
   }
-  console.log(response.status);
-  console.log(response.statusText);
+
 }
 
 /**
@@ -112,16 +107,16 @@ async function onTrack(event, settings) {
 async function onIdentify(event, settings) {
   // Learn more at https://segment.com/docs/connections/spec/track/
 
-    //Exit if no user id (anonymous user)
-  if(!event.userId){
+  //Exit if no user id (anonymous user)
+  if (!event.userId) {
     throw new Error('User ID not found.')
   }
-  
+
   if (!settings.customIdentitySource) {
     settings.customIdentitySource = 'segment';
   }
 
-  if(!event.traits.email&&!event.traits.name){
+  if (!event.traits.email && !event.traits.name) {
     throw new Error("No email or name exists in identify call.")
   }
 
@@ -129,21 +124,19 @@ async function onIdentify(event, settings) {
     'https://app.orbit.love/api/v1/' + settings.orbitSlug + '/members';
   let response;
   let body = {
-        member: {
-        },
-        identity: {
-          source: settings.customIdentitySource,
-          username: event.userId
-        }
-      }
-      //populate Member object based on what is included in identify call
-    if(event.traits.email){
-      body.member.email =  event.traits.email
+    member: {},
+    identity: {
+      source: settings.customIdentitySource,
+      username: event.userId
     }
-    if(event.traits.name){
-      body.member.name = event.traits.name
-    }
-  console.log("identify body: " + JSON.stringify(body))
+  }
+  //populate Member object based on what is included in identify call
+  if (event.traits.email) {
+    body.member.email = event.traits.email
+  }
+  if (event.traits.name) {
+    body.member.name = event.traits.name
+  }
   try {
     response = await fetch(endpoint, {
       method: 'POST',
@@ -163,7 +156,6 @@ async function onIdentify(event, settings) {
     throw new RetryError(`Failed with ${response.status}`);
   }
 
-  console.log(response)
 }
 
 async function onPage(event, settings) {
