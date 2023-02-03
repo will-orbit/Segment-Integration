@@ -5,23 +5,17 @@ This project allows sending new Activities and Members to Orbit via a Segment Fu
 
 ## Setup
 
-1. Create a new Destination Function in Segment by going to Connections --> Catalog --> Functions
-2. Copy and Paste the code in segment.js in the code editor
-3. In the right-hand panel of the Code Editor, select "Settings" and add the following variables:
+1. Clone this repo to your local machine:
+```git clone https://github.com/will-orbit/Segment-Integration```
+2. Install Axios
+```npm install axios```
+3. Run createFunction.js
+```node createFunction.js```
+4. Enter your Segment API Token (https://docs.segmentapis.com/tag/Getting-Started#section/Get-an-API-token)
+5. Connect the newly created "Orbit" Desintation Function to the relevant Segment Source
+6. Configure the Settings of this new Destination as follows:
 
-Label         | Type          | Required?     
-------------- | ------------- | -------------
-orbitSlug  | String  | Yes
-orbitApiKey  | String  | Yes
-activityMapping | Map | No
-customIdentitySource | String | No
-
-4. Click "Configure" then name and create your Segment Destination
-5. Connection this new Destination to the relevant Segment Source
-6. Set up Destination Filters for this Destination so only Identify Calls and your relevant Track Events are sent to this destination
-7. Configure the Variables for this destination as follows:
-
-### Variable Config 
+### Settings Config 
 **orbitSlug**
 
 This is the slug of your Orbit Workspace. When logged into your workspace, the slug can be found in the URL: https://app.orbit.love/[WORKSPACE SLUG]
