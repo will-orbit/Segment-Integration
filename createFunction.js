@@ -55,29 +55,30 @@ function createSegmentFunction(apiToken, functionName, settings, code) {
 
 
 async function main() {
-	//Set Repo Vars
-	var owner = "will-orbit";
-	var repo = "segment-integration";
+	//Set Vars
 	var functionFile = "segment.js";
 	var settingsFile = "functionSettings.txt"
 
 	//Get Function Code
 	var functionCode = readFile(functionFile);
-	//console.log(functionCode)
 
 	//Get Settings Array for Function
 	var settings = readFile(settingsFile);
 
 	//Ask for Segment API Key
 	var apiToken = await askQuestion("Enter your Segment API Token: ");
-	//console.log(apiToken)
+
 	//Create Function
 	console.log("Creating Segment Function...")
-	//var apiToken = "sgp_PKgTKBQUZ0SCOEDUMFMa5rerxsnYDbJivKpjDYLjDB5kI1LQKBjGF4NOt7EgguGX";
-	var functionName = "Automated Function Test 123";
+	var functionName = "Orbit";
 	var result = await createSegmentFunction(apiToken, functionName, settings, functionCode);
-	console.log("Create response code: " + result.status)
-	console.log("Create response text: " + result.statusText)
+	if(result.status == "200"){
+		console.log("Function Created Successully! Please connection this Function to a Segment Source and configure the settings.")
+	}else{
+	console.log("Create response code: " + result.status);
+	console.log("Create response text: " + result.statusText);
+	console.log("Please make sure you do not already have a Desintation Function in Segment with the name 'Orbit'");
+}
 
 }
 
